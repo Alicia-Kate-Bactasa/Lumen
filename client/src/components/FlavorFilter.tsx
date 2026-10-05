@@ -1,112 +1,121 @@
+import type { TeaCategory } from '../types/product'
+
 interface FlavorFilterProps {
-  selectedCategory: string
-  onSelectCategory: (cat: string) => void
+  selectedCategory: TeaCategory
+  onSelectCategory: (category: TeaCategory) => void
   searchQuery: string
-  onSearchChange: (q: string) => void
-  selectedFlavorNote: string
-  onSelectFlavorNote: (note: string) => void
+  onSearchChange: (query: string) => void
+  selectedTaste: string
+  onSelectTaste: (taste: string) => void
   sortBy: string
   onSortChange: (sort: string) => void
   totalCount: number
 }
 
-const FLAVOR_TAGS = [
-  'All Profiles',
-  'Deep Umami',
-  'Fresh Cream',
-  'Night Jasmine',
-  'Charred Oak',
-  'Sweet Corn',
-  'Roasted Hazelnut',
+const TASTE_OPTIONS = [
+  'All Tastes',
+  'Warm & Toasty',
+  'Fresh & Sweet',
+  'Rich & Creamy',
+  'Smooth',
 ]
 
-const CATEGORIES = ['All', 'Matcha', 'Green Tea', 'Oolong', 'Herbal']
+const CATEGORY_LIST: TeaCategory[] = [
+  'All',
+  'Matcha',
+  'Hojicha',
+  'Genmaicha',
+  'Sencha',
+  'Black Tea',
+  'Milk Tea',
+]
 
 export function FlavorFilter({
   selectedCategory,
   onSelectCategory,
   searchQuery,
   onSearchChange,
-  selectedFlavorNote,
-  onSelectFlavorNote,
+  selectedTaste,
+  onSelectTaste,
   sortBy,
   onSortChange,
   totalCount,
 }: FlavorFilterProps) {
   return (
-    <div className="filter-section">
-      {/* Category Pills & Search */}
-      <div className="filter-primary-row">
-        <div className="category-chips">
-          {CATEGORIES.map((category) => (
+    <div className="filter-panel">
+      {/* Category Selection Bar */}
+      <div className="filter-group">
+        <span className="filter-label">Choose your tea:</span>
+        <div className="category-button-row">
+          {CATEGORY_LIST.map((cat) => (
             <button
-              key={category}
+              key={cat}
               type="button"
-              className={`chip ${selectedCategory === category ? 'active' : ''}`}
-              onClick={() => onSelectCategory(category)}
+              className={`category-pill ${selectedCategory === cat ? 'active' : ''}`}
+              onClick={() => onSelectCategory(cat)}
             >
-              {category}
+              {cat === 'All' ? 'All Teas' : cat}
             </button>
           ))}
         </div>
+      </div>
 
-        <div className="search-box">
-          <svg className="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <circle cx="11" cy="11" r="8" />
-            <path d="m21 21-4.3-4.3" />
-          </svg>
+      {/* Search and Secondary Controls */}
+      <div className="filter-controls-row">
+        {/* Search */}
+        <div className="search-field-container">
+          <i className="bi bi-search search-icon"></i>
           <input
             type="text"
-            placeholder="Search cultivar, region, or notes..."
+            placeholder="Search teas by name or taste..."
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="search-input"
+            className="search-field"
           />
           {searchQuery && (
             <button
               type="button"
-              className="clear-search"
+              className="clear-search-button"
               onClick={() => onSearchChange('')}
-              aria-label="Clear search"
+              aria-label="Clear search text"
             >
-              ×
+              <i className="bi bi-x-circle-fill"></i>
             </button>
           )}
         </div>
-      </div>
 
-      {/* Flavor Note Quick Filter & Sort */}
-      <div className="filter-secondary-row">
-        <div className="flavor-notes-wrapper">
-          <span className="filter-sublabel">Flavor Accent:</span>
-          <div className="flavor-pills">
-            {FLAVOR_TAGS.map((tag) => (
+        {/* Taste Pills */}
+        <div className="taste-filter-group">
+          <span className="filter-sublabel">Taste:</span>
+          <div className="taste-pill-row">
+            {TASTE_OPTIONS.map((taste) => (
               <button
-                key={tag}
+                key={taste}
                 type="button"
-                className={`flavor-pill ${selectedFlavorNote === tag ? 'active' : ''}`}
-                onClick={() => onSelectFlavorNote(tag)}
+                className={`taste-pill ${selectedTaste === taste ? 'active' : ''}`}
+                onClick={() => onSelectTaste(taste)}
               >
-                {tag}
+                {taste}
               </button>
             ))}
           </div>
         </div>
 
-        <div className="filter-meta">
-          <span className="results-count">{totalCount} {totalCount === 1 ? 'variety' : 'varieties'}</span>
-          <div className="sort-dropdown-wrap">
-            <select
-              value={sortBy}
-              onChange={(e) => onSortChange(e.target.value)}
-              className="sort-select"
-            >
-              <option value="featured">Featured First</option>
-              <option value="price-asc">Price: Low to High</option>
-              <option value="price-desc">Price: High to Low</option>
-              <option value="name">Alphabetical</option>
-            </select>
-          </div>
+        {/* Results count & Sort */}
+        <div className="filter-right-tools">
+          <span className="count-label">
+            {totalCount} {totalCount === 1 ? 'tea' : 'teas'}
+          </span>
+          <select
+            value={sortBy}
+            onChange={(e) => onSortChange(e.target.value)}
+            className="sort-dropdown"
+          >
+            <option value="featured">Featured First</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="name">Name: A to Z</option>
+          </select>
         </div>
       </div>
     </div>

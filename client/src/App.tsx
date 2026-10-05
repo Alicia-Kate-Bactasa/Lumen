@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import type { CartItem, Product } from './types/product'
+import type { CartItem, Product, TeaCategory } from './types/product'
 import { initialMockProducts } from './data/mockProducts'
 import { fetchProducts } from './services/api'
 import { Header } from './components/Header'
@@ -17,20 +17,19 @@ export default function App() {
   const [isLiveApi, setIsLiveApi] = useState(false)
   const [loading, setLoading] = useState(true)
   const [cartItems, setCartItems] = useState<CartItem[]>([
-    // Provide a sample starter item in the cart to showcase functionality immediately
-    { product: initialMockProducts[0], quantity: 1 },
+    { product: initialMockProducts[1], quantity: 1 }, // Hojicha starter item
   ])
   const [isCartOpen, setIsCartOpen] = useState(false)
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
 
   // Filters
-  const [selectedCategory, setSelectedCategory] = useState('All')
+  const [selectedCategory, setSelectedCategory] = useState<TeaCategory>('All')
   const [searchQuery, setSearchQuery] = useState('')
-  const [selectedFlavorNote, setSelectedFlavorNote] = useState('All Profiles')
+  const [selectedTaste, setSelectedTaste] = useState('All Tastes')
   const [sortBy, setSortBy] = useState('featured')
 
-  const catalogRef = useRef<HTMLDivElement>(null)
-  const sommelierRef = useRef<HTMLDivElement>(null)
+  const catalogSectionRef = useRef<HTMLDivElement>(null)
+  const teaFinderRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     let isMounted = true
@@ -87,20 +86,20 @@ export default function App() {
     setCartItems([])
   }
 
-  // Navigation Scrolling
-  const handleScrollToCatalog = () => {
-    catalogRef.current?.scrollIntoView({ behavior: 'smooth' })
+  // Smooth scroll
+  const handleBrowseTeas = () => {
+    catalogSectionRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
-  const handleScrollToSommelier = () => {
-    sommelierRef.current?.scrollIntoView({ behavior: 'smooth' })
+  const handleOpenTeaFinder = () => {
+    teaFinderRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
   const totalCartCount = useMemo(() => {
     return cartItems.reduce((acc, item) => acc + item.quantity, 0)
   }, [cartItems])
 
-  // Filtering & Sorting
+  // Filter & sort logic
   const filteredProducts = useMemo(() => {
     return products
       .filter((p) => {
@@ -108,61 +107,69 @@ export default function App() {
         if (selectedCategory !== 'All' && p.category !== selectedCategory) {
           return false
         }
+
         // Search query
         if (searchQuery.trim()) {
           const q = searchQuery.toLowerCase()
           const matchesName = p.name.toLowerCase().includes(q)
-          const matchesOrigin = p.origin?.toLowerCase().includes(q)
-          const matchesCultivar = p.cultivar?.toLowerCase().includes(q)
-          const matchesNotes = p.flavorNotes?.some((n) => n.toLowerCase().includes(q))
-          if (!matchesName && !matchesOrigin && !matchesCultivar && !matchesNotes) {
+          const matchesCategory = p.category.toLowerCase().includes(q)
+          const matchesDesc = p.description.toLowerCase().includes(q)
+          const matchesTaste = p.tasteNotes.some((t) => t.toLowerCase().includes(q))
+          if (!matchesName && !matchesCategory && !matchesDesc && !matchesTaste) {
             return false
           }
         }
-        // Flavor note filter
-        if (selectedFlavorNote !== 'All Profiles') {
-          if (!p.flavorNotes?.includes(selectedFlavorNote)) {
-            return false
-          }
+
+        // Taste filter
+        if (selectedTaste !== 'All Tastes') {
+          const tasteKey = selectedTaste.toLowerCase()
+          const hasMatchingNote = p.tasteNotes.some((t) =>
+            t.toLowerCase().includes(tasteKey) ||
+            (tasteKey.includes('warm') && (t.toLowerCase().includes('toasted') || t.toLowerCase().includes('warm') || t.toLowerCase().includes('roasted'))) ||
+            (tasteKey.includes('fresh') && (t.toLowerCase().includes('fresh') || t.toLowerCase().includes('green') || t.toLowerCase().includes('crisp'))) ||
+            (tasteKey.includes('creamy') && (t.toLowerCase().includes('cream') || t.toLowerCase().includes('smooth') || t.toLowerCase().includes('vanilla'))) ||
+            (tasteKey.includes('smooth') && (t.toLowerCase().includes('smooth') || t.toLowerCase().includes('gentle')))
+          )
+          if (!hasMatchingNote) return false
         }
+
         return true
       })
       .sort((a, b) => {
         if (sortBy === 'price-asc') return a.price - b.price
         if (sortBy === 'price-desc') return b.price - a.price
         if (sortBy === 'name') return a.name.localeCompare(b.name)
-        // featured default
         return (b.featured ? 1 : 0) - (a.featured ? 1 : 0)
       })
-  }, [products, selectedCategory, searchQuery, selectedFlavorNote, sortBy])
+  }, [products, selectedCategory, searchQuery, selectedTaste, sortBy])
 
   return (
-    <div className="lumen-app">
+    <div className="app-layout">
       <Header
         cartItemCount={totalCartCount}
         onOpenCart={() => setIsCartOpen(true)}
-        onOpenSommelier={handleScrollToSommelier}
-        activeNav={selectedCategory}
-        onSelectNav={(cat) => {
+        onOpenTeaFinder={handleOpenTeaFinder}
+        activeCategory={selectedCategory}
+        onSelectCategory={(cat) => {
           setSelectedCategory(cat)
-          handleScrollToCatalog()
+          handleBrowseTeas()
         }}
         isLiveApi={isLiveApi}
       />
 
-      <main className="main-content">
+      <main className="content-container">
         <Hero
-          onScrollToCatalog={handleScrollToCatalog}
-          onOpenSommelier={handleScrollToSommelier}
+          onBrowseTeas={handleBrowseTeas}
+          onOpenTeaFinder={handleOpenTeaFinder}
         />
 
         {/* Catalog Section */}
-        <section ref={catalogRef} className="catalog-section">
-          <div className="catalog-header">
-            <span className="section-eyebrow">The Reserve Collection</span>
-            <h2 className="section-title">Single-Origin Harvests & Blends</h2>
-            <p className="section-subtitle">
-              Sourced in micro-batches with complete terroir traceability and flavor-mapped profiles.
+        <section ref={catalogSectionRef} className="tea-catalog-section">
+          <div className="section-intro">
+            <span className="section-label">Our Tea Lineup</span>
+            <h2 className="section-main-heading">Explore Teas for Every Day</h2>
+            <p className="section-description">
+              Find fresh Japanese green teas, cozy roasted blends, and comforting milk tea favorites.
             </p>
           </div>
 
@@ -171,41 +178,41 @@ export default function App() {
             onSelectCategory={setSelectedCategory}
             searchQuery={searchQuery}
             onSearchChange={setSearchQuery}
-            selectedFlavorNote={selectedFlavorNote}
-            onSelectFlavorNote={setSelectedFlavorNote}
+            selectedTaste={selectedTaste}
+            onSelectTaste={setSelectedTaste}
             sortBy={sortBy}
             onSortChange={setSortBy}
             totalCount={filteredProducts.length}
           />
 
           {loading ? (
-            <div className="catalog-loading">
-              <span className="loading-spinner"></span>
-              <p>Preparing the infusion...</p>
+            <div className="state-panel">
+              <div className="soft-spinner"></div>
+              <p>Loading fresh teas...</p>
             </div>
           ) : filteredProducts.length === 0 ? (
-            <div className="catalog-empty">
-              <span className="empty-symbol">🍃</span>
-              <h3>No matching teas found</h3>
-              <p>Try clearing your flavor note filter or search query to explore other harvests.</p>
+            <div className="state-panel">
+              <i className="bi bi-cup empty-icon"></i>
+              <h3>No teas found</h3>
+              <p>Try clearing your search text or choosing All Teas above.</p>
               <button
                 type="button"
-                className="btn btn-outline"
+                className="secondary-button"
                 onClick={() => {
                   setSelectedCategory('All')
                   setSearchQuery('')
-                  setSelectedFlavorNote('All Profiles')
+                  setSelectedTaste('All Tastes')
                 }}
               >
-                Reset All Filters
+                Reset Filters
               </button>
             </div>
           ) : (
-            <div className="products-grid">
-              {filteredProducts.map((product) => (
+            <div className="tea-card-grid">
+              {filteredProducts.map((tea) => (
                 <ProductCard
-                  key={product.id}
-                  product={product}
+                  key={tea.id}
+                  product={tea}
                   onAddToCart={handleAddToCart}
                   onViewDetails={setSelectedProduct}
                 />
@@ -214,8 +221,8 @@ export default function App() {
           )}
         </section>
 
-        {/* AI Sommelier Integration Section */}
-        <div ref={sommelierRef}>
+        {/* AI Tea Finder Section */}
+        <div ref={teaFinderRef}>
           <AiSommelierBanner
             products={products}
             onSelectProduct={setSelectedProduct}
