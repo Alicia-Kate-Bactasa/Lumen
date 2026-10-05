@@ -22,15 +22,16 @@ export async function fetchProducts(): Promise<{ products: Product[]; isLiveApi:
 
     const data: Product[] = await response.json()
     if (Array.isArray(data) && data.length > 0) {
-      // Merge with default tea mock metadata if raw product model is minimal
-      const enriched = data.map((item, index) => {
+      const enriched: Product[] = data.map((item, index) => {
         const fallback = initialMockProducts[index % initialMockProducts.length]
         return {
           ...fallback,
           ...item,
-          flavorProfile: item.flavorProfile ?? fallback.flavorProfile,
+          category: (item.category as Product['category']) || fallback.category,
+          caffeineLevel: item.caffeineLevel || fallback.caffeineLevel,
+          tasteProfile: item.tasteProfile ?? fallback.tasteProfile,
           brewingGuide: item.brewingGuide ?? fallback.brewingGuide,
-          flavorNotes: item.flavorNotes ?? fallback.flavorNotes,
+          tasteNotes: item.tasteNotes ?? fallback.tasteNotes,
         }
       })
       return { products: enriched, isLiveApi: true }
@@ -38,7 +39,7 @@ export async function fetchProducts(): Promise<{ products: Product[]; isLiveApi:
 
     return { products: initialMockProducts, isLiveApi: true }
   } catch (error) {
-    console.info('API unreachable or empty; utilizing artisan fallback catalog:', error)
+    console.info('Using friendly starter catalog:', error)
     return { products: initialMockProducts, isLiveApi: false }
   }
 }

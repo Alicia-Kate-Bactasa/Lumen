@@ -1,18 +1,19 @@
 export interface FlavorProfile {
-  umami: number       // 0 to 10
   sweetness: number   // 0 to 10
-  vegetal: number     // 0 to 10 (grassy / fresh green)
-  floral: number      // 0 to 10
-  bitterness: number  // 0 to 10
-  roastiness: number  // 0 to 10
+  richness: number    // 0 to 10 (smoothness / body)
+  freshness: number   // 0 to 10 (crisp / light)
+  toasted: number     // 0 to 10 (warm / roasted)
+  floral: number      // 0 to 10 (delicate aroma)
 }
 
 export interface BrewingGuide {
   waterTempC: number
-  steepSeconds: number
-  leafRatioGrams: number
-  waterVolumeMl: number
+  steepMinutes: number
+  amountTsp: number
+  simpleTip: string
 }
+
+export type TeaCategory = 'All' | 'Matcha' | 'Hojicha' | 'Genmaicha' | 'Sencha' | 'Black Tea' | 'Milk Tea'
 
 export interface Product {
   id: number
@@ -22,14 +23,11 @@ export interface Product {
   price: number
   imageUrl: string
   createdAtUtc?: string
-  // Enhanced Tea Domain fields
-  category?: 'Matcha' | 'Green Tea' | 'Oolong' | 'Black Tea' | 'Herbal'
-  origin?: string
-  cultivar?: string
-  harvestSeason?: string
-  flavorNotes?: string[]
-  flavorProfile?: FlavorProfile
-  brewingGuide?: BrewingGuide
+  category: 'Matcha' | 'Hojicha' | 'Genmaicha' | 'Sencha' | 'Black Tea' | 'Milk Tea'
+  caffeineLevel: 'None' | 'Low' | 'Medium' | 'High'
+  tasteNotes: string[]
+  tasteProfile: FlavorProfile
+  brewingGuide: BrewingGuide
   featured?: boolean
   inStock?: boolean
 }
