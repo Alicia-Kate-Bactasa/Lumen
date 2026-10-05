@@ -2,64 +2,77 @@ const CURRENT_YEAR = new Date().getFullYear()
 
 export function Footer() {
   return (
-    <footer className="lumen-footer">
-      <div className="footer-top">
-        <div className="footer-brand-col">
-          <span className="footer-logo">LUMEN</span>
-          <p className="footer-ethos">
-            Dedicated to single-origin cultivars, biodynamic shade farming, and preserving sacred tea traditions through modern sensory science.
+    <footer className="site-footer">
+      <div className="footer-container">
+        {/* Brand column */}
+        <div className="footer-col brand-col">
+          <span className="footer-brand">Lumen Tea</span>
+          <p className="footer-about">
+            We source fresh, honest teas directly from family farms in Japan.
+            No artificial additives, no complicated rituals — just pure, delicious tea.
           </p>
-          <div className="footer-quote">
-            “Tea is quiet, and our modern world is full of noise.”
+          <div className="footer-friendly-quote">
+            Good tea should be simple to enjoy every day.
           </div>
         </div>
 
-        <div className="footer-links-col">
-          <h4 className="footer-heading">Collections</h4>
-          <ul>
+        {/* Categories */}
+        <div className="footer-col">
+          <h4 className="footer-title">Explore Teas</h4>
+          <ul className="footer-nav-list">
             <li><a href="#matcha">Ceremonial Matcha</a></li>
-            <li><a href="#gyokuro">Single-Estate Gyokuro</a></li>
-            <li><a href="#sencha">High Mountain Sencha</a></li>
-            <li><a href="#oolong">Charcoal-Roasted Oolong</a></li>
-            <li><a href="#teaware">Artisan Chawan Teaware</a></li>
+            <li><a href="#hojicha">Roasted Hojicha</a></li>
+            <li><a href="#genmaicha">Toasted Rice Genmaicha</a></li>
+            <li><a href="#sencha">Spring Sencha</a></li>
+            <li><a href="#blacktea">Honey Black Tea</a></li>
+            <li><a href="#milktea">Creamy Milk Tea</a></li>
           </ul>
         </div>
 
-        <div className="footer-links-col">
-          <h4 className="footer-heading">Sensory Tech</h4>
-          <ul>
-            <li><a href="#sommelier">AI Flavor Sommelier</a></li>
-            <li><a href="#radar">6-Axis Flavor Taxonomy</a></li>
-            <li><a href="#terroir">Terroir Traceability</a></li>
-            <li><a href="#brewing">Brewing Temperature Science</a></li>
+        {/* Guides */}
+        <div className="footer-col">
+          <h4 className="footer-title">Simple Guides</h4>
+          <ul className="footer-nav-list">
+            <li><a href="#brewing">Beginner Brewing Tips</a></li>
+            <li><a href="#finder">AI Tea Finder</a></li>
+            <li><a href="#caffeine">Caffeine Guide</a></li>
+            <li><a href="#storage">Keeping Tea Fresh</a></li>
           </ul>
         </div>
 
-        <div className="footer-subscribe-col">
-          <h4 className="footer-heading">The Harvest Gazette</h4>
-          <p className="subscribe-desc">
-            Receive private allocations of First Flush Shincha and seasonal micro-lot harvests.
+        {/* Newsletter */}
+        <div className="footer-col newsletter-col">
+          <h4 className="footer-title">Tea Notes in Your Inbox</h4>
+          <p className="footer-newsletter-text">
+            Get friendly brewing tips, new harvest updates, and seasonal recommendations.
           </p>
-          <form className="subscribe-form" onSubmit={(e) => { e.preventDefault(); alert('Subscribed to Harvest Gazette!') }}>
+          <form
+            className="footer-form"
+            onSubmit={(e) => {
+              e.preventDefault()
+              alert('Thank you for subscribing to our tea notes!')
+            }}
+          >
             <input
               type="email"
-              placeholder="Enter your email..."
-              className="subscribe-input"
+              placeholder="Your email address..."
+              className="footer-email-input"
               required
             />
-            <button type="submit" className="subscribe-btn">
-              Join
+            <button type="submit" className="footer-submit-btn">
+              <span>Sign Up</span>
+              <i className="bi bi-arrow-right-short"></i>
             </button>
           </form>
         </div>
       </div>
 
-      <div className="footer-bottom">
-        <div className="footer-copy">
-          © {CURRENT_YEAR} Lumen Tea & Botanicals. All rights reserved.
+      <div className="footer-bottom-bar">
+        <div className="footer-copyright">
+          © {CURRENT_YEAR} Lumen Tea. Simple teas for everyday moments.
         </div>
-        <div className="footer-tech-stack">
-          Engineered with <strong>ASP.NET Core 10</strong>, <strong>React 19</strong>, <strong>EF Core</strong> & <strong>AI Embeddings</strong>
+        <div className="footer-tech-attribution">
+          Powered by ASP.NET Core 10 and React 19
         </div>
       </div>
     </footer>

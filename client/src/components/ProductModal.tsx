@@ -12,143 +12,156 @@ export function ProductModal({
   onClose,
   onAddToCart,
 }: ProductModalProps) {
-  const [qty, setQty] = useState(1)
+  const [quantity, setQuantity] = useState(1)
 
   if (!product) return null
 
-  const profile = product.flavorProfile
-  const guide = product.brewingGuide
+  const { tasteProfile, brewingGuide } = product
 
   const handleAdd = () => {
-    onAddToCart(product, qty)
+    onAddToCart(product, quantity)
     onClose()
   }
 
   return (
-    <div className="modal-backdrop" onClick={onClose}>
-      <div className="modal-container" onClick={(e) => e.stopPropagation()}>
+    <div className="modal-overlay" onClick={onClose}>
+      <div
+        className="modal-box"
+        onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-tea-title"
+      >
         <button
           type="button"
-          className="modal-close-btn"
+          className="modal-close-button"
           onClick={onClose}
-          aria-label="Close dialog"
+          aria-label="Close details"
         >
-          ✕
+          <i className="bi bi-x-lg"></i>
         </button>
 
-        <div className="modal-grid">
-          {/* Media Column */}
-          <div className="modal-media">
-            <img src={product.imageUrl} alt={product.name} />
-            <div className="modal-terroir-badge">
-              <span>{product.origin}</span>
-              {product.harvestSeason && <span> • {product.harvestSeason}</span>}
+        <div className="modal-layout">
+          {/* Image */}
+          <div className="modal-image-column">
+            <img
+              src={product.imageUrl}
+              alt={product.name}
+              className="modal-tea-image"
+            />
+            <div className="modal-category-tag">
+              <span>{product.category}</span>
+              <span>Caffeine: {product.caffeineLevel}</span>
             </div>
           </div>
 
-          {/* Details Column */}
-          <div className="modal-content">
-            <div className="modal-header">
-              <span className="modal-category">{product.category}</span>
-              <h2 className="modal-title">{product.name}</h2>
-              <div className="modal-price">
+          {/* Details */}
+          <div className="modal-info-column">
+            <div className="modal-header-block">
+              <span className="modal-eyebrow">{product.category}</span>
+              <h2 id="modal-tea-title" className="modal-tea-name">
+                {product.name}
+              </h2>
+              <div className="modal-price-display">
                 ${product.price.toFixed(2)}
-                <span className="modal-price-sub"> / 50g artisan canister</span>
+                <span className="modal-price-note"> / sealed fresh tin</span>
               </div>
             </div>
 
-            <p className="modal-description">{product.description}</p>
+            <p className="modal-tea-description">
+              {product.description}
+            </p>
 
-            {/* Cultivar */}
-            {product.cultivar && (
-              <div className="cultivar-note">
-                <strong>Cultivar:</strong> {product.cultivar}
+            {/* Brewing Guide */}
+            <div className="modal-section-card">
+              <h4 className="modal-section-title">
+                <i className="bi bi-cup-hot"></i>
+                <span>How to brew this tea</span>
+              </h4>
+              <div className="brewing-stats-grid">
+                <div className="brew-stat-box">
+                  <i className="bi bi-thermometer-half brew-stat-icon"></i>
+                  <span className="brew-stat-val">{brewingGuide.waterTempC}°C</span>
+                  <span className="brew-stat-label">Water Temp</span>
+                </div>
+                <div className="brew-stat-box">
+                  <i className="bi bi-stopwatch brew-stat-icon"></i>
+                  <span className="brew-stat-val">
+                    {brewingGuide.steepMinutes} {brewingGuide.steepMinutes === 1 ? 'min' : 'mins'}
+                  </span>
+                  <span className="brew-stat-label">Steep Time</span>
+                </div>
+                <div className="brew-stat-box">
+                  <i className="bi bi-cup brew-stat-icon"></i>
+                  <span className="brew-stat-val">{brewingGuide.amountTsp} tsp</span>
+                  <span className="brew-stat-label">Per Cup</span>
+                </div>
               </div>
-            )}
+              <div className="brew-tip-box">
+                <i className="bi bi-lightbulb brew-tip-icon"></i>
+                <p className="brew-tip-text">{brewingGuide.simpleTip}</p>
+              </div>
+            </div>
 
-            {/* 6-Axis Flavor Breakdown */}
-            {profile && (
-              <div className="modal-flavor-section">
-                <h4 className="section-heading">Flavor Profile Analysis</h4>
-                <div className="flavor-grid">
-                  {[
-                    { label: 'Umami', val: profile.umami, color: '#3d5a4c' },
-                    { label: 'Sweetness', val: profile.sweetness, color: '#d89b53' },
-                    { label: 'Vegetal', val: profile.vegetal, color: '#688c5f' },
-                    { label: 'Floral', val: profile.floral, color: '#bc6c82' },
-                    { label: 'Bitterness', val: profile.bitterness, color: '#88927f' },
-                    { label: 'Roastiness', val: profile.roastiness, color: '#8b5a3e' },
-                  ].map((axis) => (
-                    <div key={axis.label} className="axis-item">
-                      <div className="axis-header">
-                        <span>{axis.label}</span>
-                        <span className="axis-val">{axis.val.toFixed(1)}/10</span>
-                      </div>
-                      <div className="axis-track">
-                        <div
-                          className="axis-fill"
-                          style={{
-                            width: `${(axis.val / 10) * 100}%`,
-                            backgroundColor: axis.color,
-                          }}
-                        />
-                      </div>
+            {/* Taste Profile Bars */}
+            <div className="modal-section-card">
+              <h4 className="modal-section-title">
+                <i className="bi bi-sliders"></i>
+                <span>What it tastes like</span>
+              </h4>
+              <div className="taste-meter-grid">
+                {[
+                  { label: 'Sweetness', val: tasteProfile.sweetness },
+                  { label: 'Rich & Smooth', val: tasteProfile.richness },
+                  { label: 'Fresh & Crisp', val: tasteProfile.freshness },
+                  { label: 'Toasted / Warm', val: tasteProfile.toasted },
+                  { label: 'Floral Aroma', val: tasteProfile.floral },
+                ].map((item) => (
+                  <div key={item.label} className="taste-meter-item">
+                    <div className="taste-meter-header">
+                      <span>{item.label}</span>
+                      <span className="taste-meter-num">{item.val}/10</span>
                     </div>
-                  ))}
-                </div>
+                    <div className="taste-meter-track">
+                      <div
+                        className="taste-meter-fill"
+                        style={{ width: `${(item.val / 10) * 100}%` }}
+                      />
+                    </div>
+                  </div>
+                ))}
               </div>
-            )}
-
-            {/* Brewing Ritual Guide */}
-            {guide && (
-              <div className="modal-brewing-section">
-                <h4 className="section-heading">Recommended Brewing Ritual</h4>
-                <div className="brewing-tiles">
-                  <div className="brew-tile">
-                    <span className="brew-icon">🌡️</span>
-                    <span className="brew-val">{guide.waterTempC}°C</span>
-                    <span className="brew-label">Water Temp</span>
-                  </div>
-                  <div className="brew-tile">
-                    <span className="brew-icon">⏱️</span>
-                    <span className="brew-val">{guide.steepSeconds}s</span>
-                    <span className="brew-label">Steep Time</span>
-                  </div>
-                  <div className="brew-tile">
-                    <span className="brew-icon">🍃</span>
-                    <span className="brew-val">{guide.leafRatioGrams}g</span>
-                    <span className="brew-label">Leaf / 100ml</span>
-                  </div>
-                </div>
-              </div>
-            )}
+            </div>
 
             {/* Action Row */}
-            <div className="modal-action-row">
-              <div className="quantity-control">
+            <div className="modal-actions-bar">
+              <div className="quantity-stepper-box">
                 <button
                   type="button"
-                  onClick={() => setQty((q) => Math.max(1, q - 1))}
-                  className="qty-btn"
+                  className="step-btn"
+                  onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                  aria-label="Decrease amount"
                 >
-                  −
+                  <i className="bi bi-dash"></i>
                 </button>
-                <span className="qty-display">{qty}</span>
+                <span className="step-count">{quantity}</span>
                 <button
                   type="button"
-                  onClick={() => setQty((q) => q + 1)}
-                  className="qty-btn"
+                  className="step-btn"
+                  onClick={() => setQuantity((q) => q + 1)}
+                  aria-label="Increase amount"
                 >
-                  +
+                  <i className="bi bi-plus"></i>
                 </button>
               </div>
 
               <button
                 type="button"
-                className="btn btn-primary modal-add-btn"
+                className="add-to-cart-action-btn"
                 onClick={handleAdd}
               >
-                Add {qty} to Cart • ${(product.price * qty).toFixed(2)}
+                <i className="bi bi-bag-check"></i>
+                <span>Add to Cart — ${(product.price * quantity).toFixed(2)}</span>
               </button>
             </div>
           </div>

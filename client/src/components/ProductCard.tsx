@@ -11,108 +11,83 @@ export function ProductCard({
   onAddToCart,
   onViewDetails,
 }: ProductCardProps) {
-  const profile = product.flavorProfile
-
   return (
-    <article className="product-card">
-      {/* Image & Badges */}
-      <div className="card-media" onClick={() => onViewDetails(product)}>
+    <article className="tea-card">
+      {/* Product Image */}
+      <div
+        className="tea-card-image-wrap"
+        onClick={() => onViewDetails(product)}
+        role="button"
+        tabIndex={0}
+        aria-label={`View details for ${product.name}`}
+      >
         <img
           src={product.imageUrl}
           alt={product.name}
-          className="product-image"
+          className="tea-card-image"
           loading="lazy"
         />
-        <div className="card-badges">
-          {product.category && (
-            <span className="badge badge-category">{product.category}</span>
-          )}
+        <div className="card-badge-container">
+          <span className="tea-category-badge">{product.category}</span>
           {product.featured && (
-            <span className="badge badge-featured">Master Reserve</span>
+            <span className="tea-featured-badge">Popular Choice</span>
           )}
         </div>
       </div>
 
-      {/* Card Body */}
-      <div className="card-body">
-        <div className="card-origin">
-          {product.origin ? product.origin : 'Single Estate'}
+      {/* Card Content */}
+      <div className="tea-card-body">
+        <div className="card-meta-line">
+          <span className="caffeine-indicator">
+            <i className="bi bi-clock"></i>
+            {product.caffeineLevel} Caffeine
+          </span>
         </div>
 
-        <h3 className="card-title" onClick={() => onViewDetails(product)}>
+        <h3
+          className="tea-card-title"
+          onClick={() => onViewDetails(product)}
+        >
           {product.name}
         </h3>
 
-        <p className="card-description">
+        <p className="tea-card-desc">
           {product.description}
         </p>
 
-        {/* Tasting Notes */}
-        {product.flavorNotes && product.flavorNotes.length > 0 && (
-          <div className="card-flavor-notes">
-            {product.flavorNotes.slice(0, 3).map((note) => (
-              <span key={note} className="flavor-tag">
-                {note}
-              </span>
-            ))}
-          </div>
-        )}
+        {/* Taste Notes */}
+        <div className="card-taste-tags">
+          {product.tasteNotes.slice(0, 3).map((note) => (
+            <span key={note} className="taste-tag">
+              {note}
+            </span>
+          ))}
+        </div>
 
-        {/* Mini Flavor Spectrum Meter */}
-        {profile && (
-          <div className="card-spectrum">
-            <div className="spectrum-row">
-              <span className="spectrum-label">Umami</span>
-              <div className="spectrum-bar">
-                <div
-                  className="spectrum-fill umami-fill"
-                  style={{ width: `${(profile.umami / 10) * 100}%` }}
-                />
-              </div>
-            </div>
-            <div className="spectrum-row">
-              <span className="spectrum-label">Sweet</span>
-              <div className="spectrum-bar">
-                <div
-                  className="spectrum-fill sweet-fill"
-                  style={{ width: `${(profile.sweetness / 10) * 100}%` }}
-                />
-              </div>
-            </div>
-            <div className="spectrum-row">
-              <span className="spectrum-label">Floral</span>
-              <div className="spectrum-bar">
-                <div
-                  className="spectrum-fill floral-fill"
-                  style={{ width: `${(profile.floral / 10) * 100}%` }}
-                />
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Footer with Price and Add to Cart */}
-        <div className="card-footer">
-          <div className="price-tag">
-            <span className="currency">$</span>
-            <span className="amount">{product.price.toFixed(2)}</span>
-            <span className="unit">/ tin</span>
+        {/* Card Footer */}
+        <div className="tea-card-footer">
+          <div className="price-display">
+            <span className="price-value">${product.price.toFixed(2)}</span>
+            <span className="price-unit">per tin</span>
           </div>
 
-          <div className="card-actions">
+          <div className="card-action-buttons">
             <button
               type="button"
-              className="btn btn-sm btn-ghost"
+              className="card-details-btn"
               onClick={() => onViewDetails(product)}
+              title="See brewing guide and details"
             >
-              Ritual
+              <i className="bi bi-info-circle"></i>
+              <span>Details</span>
             </button>
             <button
               type="button"
-              className="btn btn-sm btn-primary"
+              className="card-add-btn"
               onClick={() => onAddToCart(product)}
             >
-              Add to Cart
+              <i className="bi bi-bag-plus"></i>
+              <span>Add to Cart</span>
             </button>
           </div>
         </div>

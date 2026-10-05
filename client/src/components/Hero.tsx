@@ -1,54 +1,54 @@
 interface HeroProps {
-  onScrollToCatalog: () => void
-  onOpenSommelier: () => void
+  onBrowseTeas: () => void
+  onOpenTeaFinder: () => void
 }
 
-export function Hero({ onScrollToCatalog, onOpenSommelier }: HeroProps) {
+export function Hero({ onBrowseTeas, onOpenTeaFinder }: HeroProps) {
   return (
-    <section className="lumen-hero">
-      <div className="hero-content">
-        <span className="hero-tagline">Single-Origin • Micro-Lot • AI-Curated</span>
-        <h1 className="hero-title">
-          Artisanal Teas Matched to Your Unique Palate
+    <section className="hero-section">
+      <div className="hero-container">
+        <span className="hero-badge">Welcome to Lumen Tea</span>
+        <h1 className="hero-heading">
+          Find your favorite cup of tea
         </h1>
-        <p className="hero-description">
-          Experience ceremonial matchas and wild-mountain harvests directly from
-          generational growers in Kyoto, Shizuoka, and Wuyi. Decode your flavor
-          profile with our intelligent sommelier.
+        <p className="hero-text">
+          Whether you enjoy a warm roasted Hojicha, an energizing morning Matcha, or a comforting milk tea, we make it simple to choose and brew good tea at home.
         </p>
 
-        <div className="hero-actions">
+        <div className="hero-button-group">
           <button
             type="button"
-            className="btn btn-primary"
-            onClick={onScrollToCatalog}
+            className="primary-button"
+            onClick={onBrowseTeas}
           >
-            Explore Collection
+            <span>Browse All Teas</span>
+            <i className="bi bi-arrow-right"></i>
           </button>
           <button
             type="button"
-            className="btn btn-outline"
-            onClick={onOpenSommelier}
+            className="secondary-button"
+            onClick={onOpenTeaFinder}
           >
-            <span>Match My Flavor Profile</span>
-            <span className="sparkle-icon">✨</span>
+            <i className="bi bi-stars"></i>
+            <span>Help Me Choose</span>
           </button>
         </div>
 
-        <div className="hero-stats">
-          <div className="stat-item">
-            <span className="stat-number">100%</span>
-            <span className="stat-label">Direct Farm Traceability</span>
+        <div className="hero-features-list">
+          <div className="hero-feature-item">
+            <i className="bi bi-cup-hot feature-icon"></i>
+            <span className="feature-title">Easy to Brew</span>
+            <span className="feature-desc">Simple guides with each tea</span>
           </div>
-          <div className="stat-divider"></div>
-          <div className="stat-item">
-            <span className="stat-number">6-Axis</span>
-            <span className="stat-label">Flavor Profiling</span>
+          <div className="hero-feature-item">
+            <i className="bi bi-leaf feature-icon"></i>
+            <span className="feature-title">Pure Whole Leaves</span>
+            <span className="feature-desc">Naturally fresh and clean</span>
           </div>
-          <div className="stat-divider"></div>
-          <div className="stat-item">
-            <span className="stat-number">Sub-70°C</span>
-            <span className="stat-label">Shade-Grown Mastery</span>
+          <div className="hero-feature-item">
+            <i className="bi bi-heart feature-icon"></i>
+            <span className="feature-title">Comforting Taste</span>
+            <span className="feature-desc">Smooth and never harsh</span>
           </div>
         </div>
       </div>
