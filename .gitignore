@@ -24,3 +24,7 @@ Temporary Items
 **/node_modules/
 **/.vite/
 client/dist/
+
+# Local secrets (never push real passwords)
+.env
+!.env.example
