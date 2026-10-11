@@ -38,4 +38,41 @@ public class ProductsController(AppDbContext dbContext) : ControllerBase
 
         return CreatedAtAction(nameof(GetById), new { id = product.Id }, product);
     }
+
+    [HttpPut("{id:int}")]
+    public async Task<ActionResult<Product>> Update(int id, Product product, CancellationToken cancellationToken)
+    {
+        var existing = await dbContext.Products.FirstOrDefaultAsync(item => item.Id == id, cancellationToken);
+
+        if (existing is null)
+        {
+            return NotFound();
+        }
+
+        existing.Name = product.Name;
+        existing.Slug = product.Slug;
+        existing.Description = product.Description;
+        existing.Price = product.Price;
+        existing.ImageUrl = product.ImageUrl;
+
+        await dbContext.SaveChangesAsync(cancellationToken);
+
+        return Ok(existing);
+    }
+
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
+    {
+        var existing = await dbContext.Products.FirstOrDefaultAsync(item => item.Id == id, cancellationToken);
+
+        if (existing is null)
+        {
+            return NotFound();
+        }
+
+        dbContext.Products.Remove(existing);
+        await dbContext.SaveChangesAsync(cancellationToken);
+
+        return NoContent();
+    }
 }
