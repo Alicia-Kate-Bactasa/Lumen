@@ -15,6 +15,10 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             entity.Property(product => product.Slug).HasMaxLength(160);
             entity.Property(product => product.ImageUrl).HasMaxLength(400);
             entity.Property(product => product.Price).HasPrecision(18, 2);
+            entity.Property(product => product.Category).HasMaxLength(40);
+            entity.Property(product => product.CaffeineLevel).HasMaxLength(20);
+            entity.Property(product => product.TasteNotes).HasMaxLength(500);
+            entity.Property(product => product.BrewingTip).HasMaxLength(500);
             entity.Property(product => product.CreatedAtUtc).HasDefaultValueSql("SYSUTCDATETIME()");
         });
     }
