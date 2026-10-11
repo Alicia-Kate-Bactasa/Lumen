@@ -54,6 +54,21 @@ public class ProductsController(AppDbContext dbContext) : ControllerBase
         existing.Description = product.Description;
         existing.Price = product.Price;
         existing.ImageUrl = product.ImageUrl;
+        existing.Category = product.Category;
+        existing.CaffeineLevel = product.CaffeineLevel;
+        existing.TasteNotes = product.TasteNotes;
+        existing.Sweetness = product.Sweetness;
+        existing.Richness = product.Richness;
+        existing.Freshness = product.Freshness;
+        existing.Toasted = product.Toasted;
+        existing.Floral = product.Floral;
+        existing.WaterTempC = product.WaterTempC;
+        existing.SteepMinutes = product.SteepMinutes;
+        existing.AmountTsp = product.AmountTsp;
+        existing.BrewingTip = product.BrewingTip;
+        existing.StockQuantity = product.StockQuantity;
+        existing.Featured = product.Featured;
+        existing.InStock = product.InStock;
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
