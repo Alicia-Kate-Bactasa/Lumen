@@ -14,7 +14,6 @@ import './App.css'
 
 export default function App() {
   const [products, setProducts] = useState<Product[]>(initialMockProducts)
-  const [isLiveApi, setIsLiveApi] = useState(false)
   const [loading, setLoading] = useState(true)
   const [cartItems, setCartItems] = useState<CartItem[]>([
     { product: initialMockProducts[1], quantity: 1 }, // Hojicha starter item
@@ -39,7 +38,6 @@ export default function App() {
       const res = await fetchProducts()
       if (isMounted) {
         setProducts(res.products)
-        setIsLiveApi(res.isLiveApi)
         setLoading(false)
       }
     }
@@ -148,13 +146,7 @@ export default function App() {
       <Header
         cartItemCount={totalCartCount}
         onOpenCart={() => setIsCartOpen(true)}
-        onOpenTeaFinder={handleOpenTeaFinder}
-        activeCategory={selectedCategory}
-        onSelectCategory={(cat) => {
-          setSelectedCategory(cat)
-          handleBrowseTeas()
-        }}
-        isLiveApi={isLiveApi}
+        onGoHome={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
       />
 
       <main className="content-container">

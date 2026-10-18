@@ -1,25 +1,33 @@
 :root {
-  /* Soft, Calming Color Palette */
-  --bg-main: #fbfaf7;
-  --bg-surface: #ffffff;
-  --bg-subtle: #f5f3ee;
-  --bg-hover: #ece9e1;
+  /* Dirty White Base & Surfaces */
+  --bg-main: #f5f2ea;
+  --bg-surface: #faf7f1;
+  --bg-subtle: #ede6dc;
+  --bg-hover: #e3dcd1;
 
-  /* Light Pine-Jade Green Accents */
-  --jade-primary: #3d6f5c;
-  --jade-hover: #325d4c;
-  --jade-light: #528c75;
-  --jade-soft: #eaf3ee;
-  --jade-border: #d4e5dc;
+  /* Matcha & Botanical Green */
+  --jade-primary: #2d5a44;
+  --jade-hover: #214433;
+  --jade-light: #417b5e;
+  --jade-soft: #e3eee7;
+  --jade-border: #bcd6c6;
 
-  /* Gentle Borders & Lines */
-  --border-light: #e7e3db;
-  --border-subtle: #f0ece5;
+  /* Tea Rose & Sakura Pink */
+  --pink-primary: #d4637d;
+  --pink-hover: #ba4c66;
+  --pink-light: #e88299;
+  --pink-soft: #faebef;
+  --pink-border: #f1cbd4;
+  --pink-accent: #e2718e;
+
+  /* Dirty White Borders & Lines */
+  --border-light: #ddd5c6;
+  --border-subtle: #e7e0d3;
 
   /* Comfortable Text Colors */
-  --text-main: #242926;
-  --text-muted: #5e6862;
-  --text-subtle: #89938d;
+  --text-main: #272d28;
+  --text-muted: #57635b;
+  --text-subtle: #86938a;
 
   /* Typography Stack */
   --font-serif: "Playfair Display", Georgia, "Times New Roman", serif;
