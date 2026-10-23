@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { CartItem, Product, TeaCategory } from './types/product'
+import type { Order, User } from './types/auth'
 import { initialMockProducts } from './data/mockProducts'
 import { fetchProducts } from './services/api'
+import { clearCurrentSession, getCurrentSession } from './services/authApi'
 import { Header } from './components/Header'
 import { Hero } from './components/Hero'
 import { FlavorFilter } from './components/FlavorFilter'
@@ -10,6 +12,9 @@ import { ProductModal } from './components/ProductModal'
 import { CartDrawer } from './components/CartDrawer'
 import { AiSommelierBanner } from './components/AiSommelierBanner'
 import { Footer } from './components/Footer'
+import { AuthModal } from './components/AuthModal'
+import { CheckoutModal } from './components/CheckoutModal'
+import { OrdersModal } from './components/OrdersModal'
 import './App.css'
 
 export default function App() {
@@ -20,6 +25,15 @@ export default function App() {
   ])
   const [isCartOpen, setIsCartOpen] = useState(false)
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
+
+  // Auth & Account state
+  const [currentUser, setCurrentUser] = useState<User | null>(() => getCurrentSession().user)
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
+  const [authMode, setAuthMode] = useState<'login' | 'signup'>('login')
+  const [authMessage, setAuthMessage] = useState<string | null>(null)
+  const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false)
+  const [isOrdersModalOpen, setIsOrdersModalOpen] = useState(false)
+  const [pendingCheckoutAfterAuth, setPendingCheckoutAfterAuth] = useState(false)
 
   // Filters
   const [selectedCategory, setSelectedCategory] = useState<TeaCategory>('All')
@@ -84,6 +98,45 @@ export default function App() {
     setCartItems([])
   }
 
+  // Auth Operations
+  const handleOpenAuth = (mode: 'login' | 'signup', message?: string) => {
+    setAuthMode(mode)
+    setAuthMessage(message || null)
+    setIsAuthModalOpen(true)
+  }
+
+  const handleAuthSuccess = (user: User) => {
+    setCurrentUser(user)
+    setIsAuthModalOpen(false)
+
+    if (pendingCheckoutAfterAuth) {
+      setPendingCheckoutAfterAuth(false)
+      setIsCartOpen(false)
+      setIsCheckoutModalOpen(true)
+    }
+  }
+
+  const handleLogout = () => {
+    clearCurrentSession()
+    setCurrentUser(null)
+  }
+
+  // Checkout flow: Account is required
+  const handleCheckoutClick = () => {
+    if (!currentUser) {
+      setPendingCheckoutAfterAuth(true)
+      handleOpenAuth('login', 'Please log in or create an account to place your order.')
+      return
+    }
+
+    setIsCartOpen(false)
+    setIsCheckoutModalOpen(true)
+  }
+
+  const handleOrderSuccess = (_order: Order) => {
+    handleClearCart()
+  }
+
   // Smooth scroll
   const handleBrowseTeas = () => {
     catalogSectionRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -145,8 +198,12 @@ export default function App() {
     <div className="app-layout">
       <Header
         cartItemCount={totalCartCount}
+        user={currentUser}
         onOpenCart={() => setIsCartOpen(true)}
         onGoHome={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        onOpenAuth={handleOpenAuth}
+        onOpenOrders={() => setIsOrdersModalOpen(true)}
+        onLogout={handleLogout}
       />
 
       <main className="content-container">
@@ -235,9 +292,37 @@ export default function App() {
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
         items={cartItems}
+        isLoggedIn={!!currentUser}
         onUpdateQuantity={handleUpdateQuantity}
         onRemoveItem={handleRemoveFromCart}
         onClearCart={handleClearCart}
+        onCheckout={handleCheckoutClick}
+      />
+
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        initialMode={authMode}
+        message={authMessage}
+        onClose={() => {
+          setIsAuthModalOpen(false)
+          setPendingCheckoutAfterAuth(false)
+        }}
+        onSuccess={handleAuthSuccess}
+      />
+
+      <CheckoutModal
+        isOpen={isCheckoutModalOpen}
+        user={currentUser}
+        items={cartItems}
+        onClose={() => setIsCheckoutModalOpen(false)}
+        onOrderSuccess={handleOrderSuccess}
+        onViewOrders={() => setIsOrdersModalOpen(true)}
+      />
+
+      <OrdersModal
+        isOpen={isOrdersModalOpen}
+        user={currentUser}
+        onClose={() => setIsOrdersModalOpen(false)}
       />
     </div>
   )

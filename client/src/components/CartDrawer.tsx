@@ -4,9 +4,11 @@ interface CartDrawerProps {
   isOpen: boolean
   onClose: () => void
   items: CartItem[]
+  isLoggedIn?: boolean
   onUpdateQuantity: (productId: number, newQty: number) => void
   onRemoveItem: (productId: number) => void
   onClearCart: () => void
+  onCheckout: () => void
 }
 
 const FREE_SHIPPING_LIMIT = 45.0
@@ -15,9 +17,11 @@ export function CartDrawer({
   isOpen,
   onClose,
   items,
+  isLoggedIn = false,
   onUpdateQuantity,
   onRemoveItem,
   onClearCart,
+  onCheckout,
 }: CartDrawerProps) {
   if (!isOpen) return null
 
@@ -164,15 +168,20 @@ export function CartDrawer({
               </span>
             </div>
 
+            {!isLoggedIn && (
+              <div className="cart-auth-note">
+                <i className="bi bi-info-circle"></i>
+                <span>You will need an account to place your order</span>
+              </div>
+            )}
+
             <button
               type="button"
               className="checkout-action-button"
-              onClick={() => {
-                alert('Checkout will connect to your payment processor in Phase 3.')
-              }}
+              onClick={onCheckout}
             >
               <i className="bi bi-lock-fill"></i>
-              <span>Proceed to Checkout</span>
+              <span>{isLoggedIn ? 'Proceed to Checkout' : 'Log In to Checkout'}</span>
             </button>
 
             <button
