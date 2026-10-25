@@ -1,4 +1,5 @@
 import type { Product } from '../types/product'
+import { formatPrice } from '../utils/currency'
 
 interface ProductCardProps {
   product: Product
@@ -67,7 +68,7 @@ export function ProductCard({
         {/* Card Footer */}
         <div className="tea-card-footer">
           <div className="price-display">
-            <span className="price-value">${product.price.toFixed(2)}</span>
+            <span className="price-value">{formatPrice(product.price)}</span>
             <span className="price-unit">per tin</span>
           </div>
 

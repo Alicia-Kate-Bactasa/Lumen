@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import type { Order, User } from '../types/auth'
 import { fetchUserOrders } from '../services/authApi'
+import { formatPrice } from '../utils/currency'
 
 interface OrdersModalProps {
   isOpen: boolean
@@ -110,7 +111,7 @@ export function OrdersModal({ isOpen, user, onClose }: OrdersModalProps) {
                           {it.quantity}x {it.productName}
                         </span>
                         <span className="compact-item-price">
-                          ${(it.price * it.quantity).toFixed(2)}
+                          {formatPrice(it.price * it.quantity)}
                         </span>
                       </div>
                     ))}
@@ -121,7 +122,7 @@ export function OrdersModal({ isOpen, user, onClose }: OrdersModalProps) {
                       <i className="bi bi-geo-alt"></i> {order.shippingAddress}
                     </span>
                     <span className="order-total-price">
-                      Total: <strong>${order.totalAmount.toFixed(2)}</strong>
+                      Total: <strong>{formatPrice(order.totalAmount)}</strong>
                     </span>
                   </div>
                 </div>

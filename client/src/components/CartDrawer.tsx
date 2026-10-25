@@ -1,4 +1,5 @@
 import type { CartItem } from '../types/product'
+import { formatPrice } from '../utils/currency'
 
 interface CartDrawerProps {
   isOpen: boolean
@@ -63,7 +64,7 @@ export function CartDrawer({
           <div className="shipping-message">
             {remainingForFreeShipping > 0 ? (
               <span>
-                Add <strong>${remainingForFreeShipping.toFixed(2)}</strong> more to get <strong>Free Standard Shipping</strong>
+                Add <strong>{formatPrice(remainingForFreeShipping)}</strong> more to get <strong>Free Standard Shipping</strong>
               </span>
             ) : (
               <span className="shipping-success">
@@ -107,7 +108,7 @@ export function CartDrawer({
                     <span className="cart-card-category">{product.category}</span>
                     <h4 className="cart-card-name">{product.name}</h4>
                     <span className="cart-card-price">
-                      ${product.price.toFixed(2)}
+                      {formatPrice(product.price)}
                     </span>
 
                     <div className="cart-card-controls">
@@ -153,18 +154,18 @@ export function CartDrawer({
           <div className="drawer-summary-footer">
             <div className="summary-line">
               <span>Subtotal</span>
-              <span className="summary-amount">${subtotal.toFixed(2)}</span>
+              <span className="summary-amount">{formatPrice(subtotal)}</span>
             </div>
             <div className="summary-line">
               <span>Shipping</span>
               <span className="summary-amount">
-                {remainingForFreeShipping === 0 ? 'Free' : '$4.99'}
+                {remainingForFreeShipping === 0 ? 'Free' : formatPrice(4.99)}
               </span>
             </div>
             <div className="summary-line total-line">
               <span>Total</span>
               <span className="total-amount">
-                ${(subtotal + (remainingForFreeShipping === 0 ? 0 : 4.99)).toFixed(2)}
+                {formatPrice(subtotal + (remainingForFreeShipping === 0 ? 0 : 4.99))}
               </span>
             </div>
 
