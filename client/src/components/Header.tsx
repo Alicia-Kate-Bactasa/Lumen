@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import type { User } from '../types/auth'
+import { SampaguitaStar } from './FloralIcons'
 
 interface HeaderProps {
   cartItemCount: number
@@ -49,8 +50,13 @@ export function Header({
             onClick={onGoHome}
             aria-label="Go to home"
           >
-            <span className="brand-name">Lumen Tea</span>
-            <span className="brand-tagline">Simple, Honest Teas</span>
+            <div className="brand-icon-wrap">
+              <SampaguitaStar size={22} className="brand-flower" />
+            </div>
+            <div className="brand-text-block">
+              <span className="brand-name">Lumen</span>
+              <span className="brand-tagline">Artisanal Matcha</span>
+            </div>
           </button>
 
           {/* Right Action Controls */}
