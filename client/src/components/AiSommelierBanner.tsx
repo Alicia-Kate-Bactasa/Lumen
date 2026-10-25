@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { Product } from '../types/product'
+import { formatPrice } from '../utils/currency'
 
 interface AiSommelierBannerProps {
   products: Product[]
@@ -119,7 +120,7 @@ export function AiSommelierBanner({ products, onSelectProduct }: AiSommelierBann
                   <span className="mini-tea-cat">{tea.category}</span>
                   <h4 className="mini-tea-name">{tea.name}</h4>
                   <div className="mini-tea-footer">
-                    <span className="mini-tea-price">${tea.price.toFixed(2)}</span>
+                    <span className="mini-tea-price">{formatPrice(tea.price)}</span>
                     <span className="mini-tea-link">
                       <span>View</span>
                       <i className="bi bi-arrow-right-short"></i>

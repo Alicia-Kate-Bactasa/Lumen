@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { CartItem } from '../types/product'
 import type { Order, User } from '../types/auth'
 import { placeOrder } from '../services/authApi'
+import { formatPrice } from '../utils/currency'
 
 interface CheckoutModalProps {
   isOpen: boolean
@@ -113,7 +114,7 @@ export function CheckoutModal({
               </div>
               <div className="order-detail-row">
                 <span className="order-detail-label">Total Amount</span>
-                <span className="order-detail-value font-bold">${placedOrder.totalAmount.toFixed(2)}</span>
+                <span className="order-detail-value font-bold">{formatPrice(placedOrder.totalAmount)}</span>
               </div>
             </div>
 
@@ -126,7 +127,7 @@ export function CheckoutModal({
                       {it.quantity}x {it.productName}
                     </span>
                     <span className="order-item-price">
-                      ${(it.price * it.quantity).toFixed(2)}
+                      {formatPrice(it.price * it.quantity)}
                     </span>
                   </li>
                 ))}
@@ -187,11 +188,11 @@ export function CheckoutModal({
                       <div className="checkout-item-info">
                         <span className="checkout-item-title">{product.name}</span>
                         <span className="checkout-item-meta">
-                          Qty: {quantity} &times; ${product.price.toFixed(2)}
+                          Qty: {quantity} &times; {formatPrice(product.price)}
                         </span>
                       </div>
                       <span className="checkout-item-total">
-                        ${(product.price * quantity).toFixed(2)}
+                        {formatPrice(product.price * quantity)}
                       </span>
                     </div>
                   ))}
@@ -220,15 +221,15 @@ export function CheckoutModal({
               <div className="checkout-summary-box">
                 <div className="summary-line">
                   <span>Subtotal</span>
-                  <span>${subtotal.toFixed(2)}</span>
+                  <span>{formatPrice(subtotal)}</span>
                 </div>
                 <div className="summary-line">
                   <span>Shipping</span>
-                  <span>{isFreeShipping ? 'Free Standard Shipping' : `$${SHIPPING_FEE.toFixed(2)}`}</span>
+                  <span>{isFreeShipping ? 'Free Standard Shipping' : formatPrice(SHIPPING_FEE)}</span>
                 </div>
                 <div className="summary-line total-line">
                   <span>Total</span>
-                  <span className="total-amount">${total.toFixed(2)}</span>
+                  <span className="total-amount">{formatPrice(total)}</span>
                 </div>
               </div>
 
@@ -245,7 +246,7 @@ export function CheckoutModal({
                 ) : (
                   <>
                     <i className="bi bi-lock-fill"></i>
-                    <span>Place Order &bull; ${total.toFixed(2)}</span>
+                    <span>Place Order &bull; {formatPrice(total)}</span>
                   </>
                 )}
               </button>

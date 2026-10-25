@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { Product } from '../types/product'
+import { formatPrice } from '../utils/currency'
 
 interface ProductModalProps {
   product: Product | null
@@ -63,7 +64,7 @@ export function ProductModal({
                 {product.name}
               </h2>
               <div className="modal-price-display">
-                ${product.price.toFixed(2)}
+                {formatPrice(product.price)}
                 <span className="modal-price-note"> / sealed fresh tin</span>
               </div>
             </div>
@@ -161,7 +162,7 @@ export function ProductModal({
                 onClick={handleAdd}
               >
                 <i className="bi bi-bag-check"></i>
-                <span>Add to Cart — ${(product.price * quantity).toFixed(2)}</span>
+                <span>Add to Cart — {formatPrice(product.price * quantity)}</span>
               </button>
             </div>
           </div>
