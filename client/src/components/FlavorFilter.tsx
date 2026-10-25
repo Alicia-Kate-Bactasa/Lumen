@@ -1,4 +1,5 @@
 import type { TeaCategory } from '../types/product'
+import { SampaguitaStar } from './FloralIcons'
 
 interface FlavorFilterProps {
   selectedCategory: TeaCategory
@@ -42,19 +43,22 @@ export function FlavorFilter({
   totalCount,
 }: FlavorFilterProps) {
   return (
-    <div className="filter-panel">
+    <div className="filter-panel pill-filter-panel">
       {/* Category Selection Bar */}
       <div className="filter-group">
-        <span className="filter-label">Choose your tea:</span>
+        <div className="filter-label-wrap">
+          <SampaguitaStar size={13} className="filter-star-icon" />
+          <span className="filter-label">Botanical Category</span>
+        </div>
         <div className="category-button-row">
           {CATEGORY_LIST.map((cat) => (
             <button
               key={cat}
               type="button"
-              className={`category-pill ${selectedCategory === cat ? 'active' : ''}`}
+              className={`category-pill pill-btn ${selectedCategory === cat ? 'active' : ''}`}
               onClick={() => onSelectCategory(cat)}
             >
-              {cat === 'All' ? 'All Teas' : cat}
+              {cat === 'All' ? 'All Botanical Teas' : cat}
             </button>
           ))}
         </div>
@@ -63,14 +67,14 @@ export function FlavorFilter({
       {/* Search and Secondary Controls */}
       <div className="filter-controls-row">
         {/* Search */}
-        <div className="search-field-container">
+        <div className="search-field-container pill-search-container">
           <i className="bi bi-search search-icon"></i>
           <input
             type="text"
-            placeholder="Search teas by name or taste..."
+            placeholder="Search matcha, floral notes, or origin..."
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="search-field"
+            className="search-field pill-input"
           />
           {searchQuery && (
             <button
@@ -86,13 +90,13 @@ export function FlavorFilter({
 
         {/* Taste Pills */}
         <div className="taste-filter-group">
-          <span className="filter-sublabel">Taste:</span>
+          <span className="filter-sublabel">Aroma & Taste:</span>
           <div className="taste-pill-row">
             {TASTE_OPTIONS.map((taste) => (
               <button
                 key={taste}
                 type="button"
-                className={`taste-pill ${selectedTaste === taste ? 'active' : ''}`}
+                className={`taste-pill pill-btn ${selectedTaste === taste ? 'active' : ''}`}
                 onClick={() => onSelectTaste(taste)}
               >
                 {taste}
@@ -103,15 +107,15 @@ export function FlavorFilter({
 
         {/* Results count & Sort */}
         <div className="filter-right-tools">
-          <span className="count-label">
+          <span className="count-label pill-tag">
             {totalCount} {totalCount === 1 ? 'tea' : 'teas'}
           </span>
           <select
             value={sortBy}
             onChange={(e) => onSortChange(e.target.value)}
-            className="sort-dropdown"
+            className="sort-dropdown pill-select"
           >
-            <option value="featured">Featured First</option>
+            <option value="featured">Artisanal Featured</option>
             <option value="price-asc">Price: Low to High</option>
             <option value="price-desc">Price: High to Low</option>
             <option value="name">Name: A to Z</option>

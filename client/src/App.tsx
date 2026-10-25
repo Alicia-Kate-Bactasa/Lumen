@@ -6,11 +6,14 @@ import { fetchProducts } from './services/api'
 import { clearCurrentSession, getCurrentSession } from './services/authApi'
 import { Header } from './components/Header'
 import { Hero } from './components/Hero'
+import { AtelierPhilosophy } from './components/AtelierPhilosophy'
 import { FlavorFilter } from './components/FlavorFilter'
 import { ProductCard } from './components/ProductCard'
 import { ProductModal } from './components/ProductModal'
 import { CartDrawer } from './components/CartDrawer'
 import { AiSommelierBanner } from './components/AiSommelierBanner'
+import { ReviewsSection } from './components/ReviewsSection'
+import { SampaguitaStar, LilyPetal, WaveDivider } from './components/FloralIcons'
 import { Footer } from './components/Footer'
 import { AuthModal } from './components/AuthModal'
 import { CheckoutModal } from './components/CheckoutModal'
@@ -212,13 +215,20 @@ export default function App() {
           onOpenTeaFinder={handleOpenTeaFinder}
         />
 
+        {/* The Atelier Philosophy & Unique Twist Swatches */}
+        <AtelierPhilosophy />
+
         {/* Catalog Section */}
         <section ref={catalogSectionRef} className="tea-catalog-section">
           <div className="section-intro">
-            <span className="section-label">Our Tea Lineup</span>
+            <div className="botanical-eyebrow">
+              <SampaguitaStar size={15} className="badge-flower" />
+              <span>Artisanal Whole-Leaf Selection</span>
+              <LilyPetal size={15} className="badge-flower" />
+            </div>
             <h2 className="section-main-heading">Explore Teas for Every Day</h2>
             <p className="section-description">
-              Find fresh Japanese green teas, cozy roasted blends, and comforting milk tea favorites.
+              Stone-ground ceremonial Uji matcha, roasted hojicha, and fragrant whole-leaf botanicals.
             </p>
           </div>
 
@@ -270,8 +280,24 @@ export default function App() {
           )}
         </section>
 
+        {/* Seamless Curved Wave: Creamy Off-White into Blush Pink Reviews */}
+        <div className="section-wave-wrap wave-bg-offwhite">
+          <WaveDivider colorClass="fill-blush" />
+        </div>
+
+        {/* Reviews: Notes from Matcha Lovers */}
+        <ReviewsSection
+          products={products}
+          onSelectProduct={setSelectedProduct}
+        />
+
+        {/* Seamless Curved Wave: Blush Pink into Warm Peach AI Tea Guide */}
+        <div className="section-wave-wrap wave-bg-blush">
+          <WaveDivider colorClass="fill-peach" />
+        </div>
+
         {/* AI Tea Finder Section */}
-        <div ref={teaFinderRef}>
+        <div ref={teaFinderRef} className="tea-finder-wrapper">
           <AiSommelierBanner
             products={products}
             onSelectProduct={setSelectedProduct}

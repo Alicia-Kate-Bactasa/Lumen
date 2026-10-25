@@ -137,7 +137,7 @@ export const initialMockProducts: Product[] = [
     slug: 'creamy-milk-tea-blend',
     description: 'Full-bodied black tea crafted specially to pair with your favorite milk, oat milk, and a spoonful of honey.',
     price: 21.0,
-    imageUrl: 'https://images.unsplash.com/photo-1558857563-b37cf545465e?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=800&q=80',
     category: 'Milk Tea',
     caffeineLevel: 'Medium',
     tasteNotes: ['Rich vanilla', 'Dark malt', 'Creamy'],
